@@ -18,8 +18,9 @@ export default function EditInvoiceForm({
   invoice: InvoiceForm;
   customers: CustomerField[];
 }) {
+  const editInvoiceWhitId = editInvoice.bind(null, invoice.id); // 返回一个原函数副本并添加一个参数在原arg...前面
   return (
-    <form action={editInvoice}>
+    <form action={editInvoiceWhitId}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
