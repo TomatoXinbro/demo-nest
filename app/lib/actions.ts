@@ -31,6 +31,7 @@ export type State = {
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
 
 export async function createInvoice(prevState: State, formData: FormData) {
+  /* State 包含useformData传递的状态 */
   const validatedFields = CreateInvoice.safeParse(
     Object.fromEntries(formData.entries()), // 获取所有formData属性键值对 再转为对象
   );
@@ -61,11 +62,23 @@ export async function createInvoice(prevState: State, formData: FormData) {
   redirect('/dashboard/invoices');
 }
 
-export async function editInvoice(id: string, formData: FormData) {
-  const { customerId, amount, status } = CreateInvoice.parse(
+const UpdateInvoice = FormSchema.omit({ id: true, date: true });
+
+export async function editInvoice(
+  id: string,
+  prevState: State /* State 包含useformData传递的状态 */,
+  formData: FormData,
+) {
+  const validatedFields = UpdateInvoice.safeParse(
     Object.fromEntries(formData.entries()), // 获取所有formData属性键值对 再转为对象
   );
-  // console.log(customerId, amount, status, '哈');
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Invoice.',
+    };
+  }
+  const { customerId, amount, status } = validatedFields.data;
   const amountInCents = amount * 100; // 转换金额
   // convert 转换
   try {
@@ -83,8 +96,6 @@ export async function editInvoice(id: string, formData: FormData) {
 }
 
 export async function deleteInvoice(id: string) {
-  console.log(id, 'formData`');
-  throw new Error('啊哦，something error here');
   try {
     await sql`DELETE FROM invoices WHERE id = ${id}`;
   } catch (error) {

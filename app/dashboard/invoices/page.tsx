@@ -16,7 +16,6 @@ export default async function Page({
 }: {
   searchParams: SearchParams;
 }) {
-  console.log(searchParams.page, 'page');
   const query = searchParams.query ?? '';
   const currentPage = searchParams.page ?? 1;
 
