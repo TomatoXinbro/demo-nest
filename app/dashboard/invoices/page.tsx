@@ -5,11 +5,15 @@ import { CreateInvoice } from '@/app/ui/invoices/buttons';
 import { inter, lusitana } from '@/app/ui/fonts';
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
+import { Metadata } from 'next';
 
 interface SearchParams {
   query?: string;
   page?: string;
 }
+export const metadata: Metadata = {
+  title: 'Invoices',
+};
 
 export default async function Page({
   searchParams,
